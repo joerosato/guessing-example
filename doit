@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# testing nonce
+#
+# Use /run/user/$UID since memory is faster than disk
+#
+# printf 0%.0s {1..30}
+
+
+dir=/run/user/$UID/work
+mkdir -p $dir
+file=$dir/hold
+touch $file
+ln -fs $file block_with_nonce
+
+date
+
+function findit
+{
+g=0
+while true
+do
+cat block > $file
+let g=g+1
+cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1 >> $file
+#echo "$g "
+sha256sum $file | grep ^$1
+[[ $? -eq 0 ]] && return 0
+done
+}
+
+time findit 0
+time findit 00
+time findit 000
+time findit 0000
+time findit 00000
+
+exit 0
