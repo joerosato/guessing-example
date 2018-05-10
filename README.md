@@ -4,6 +4,5 @@ Tiny little test in bash to show bitcoin [nonce](https://en.bitcoin.it/wiki/Nonc
 Just does 1-zero to 5-zeros, past 3-zeros the times get big
 
 ```
-$ rm block_with_nonce
 $ ./doit
 ```
